@@ -187,7 +187,16 @@ class AltoRouter {
 
 		// set Request Url if it isn't passed as parameter
 		if($requestUrl === null) {
-			$requestUrl = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
+			if (isset($_SERVER['REQUEST_URI'])) {
+				if (substr($_SERVER['REQUEST_URI'], -1) === "/") {
+					$requestUrl = substr($_SERVER['REQUEST_URI'], 0, -1);
+				} else {
+					$requestUrl = $_SERVER['REQUEST_URI'];
+				}
+				$requestUrl .= "/";
+			} else {
+				$requestUrl = "/";
+			}
 		}
 
 		// strip base path from request url
